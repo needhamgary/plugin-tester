@@ -18,28 +18,24 @@
  * ```
  */
 
+import type { GuildMember, PermissionResolvable } from "discord.js";
+import { CommandInteraction } from "discord.js";
 import {
-  type GuildMember,
-  PermissionResolvable,
-  GuildMemberResolvable,
-} from "discord.js";
-import { CommandType, EventPlugin, PluginType } from "@sern/handler";
+  CommandType,
+  Controller,
+  EventPlugin,
+  PluginType,
+} from "@sern/handler";
 export function requirePermission(
-  target: GuildMemberResolvable,
+  target: "user" | "bot",
   perm: PermissionResolvable,
   response?: string
-): EventPlugin<
-  CommandType.Both,
-  CommandType.MenuMsg,
-  CommandType.MenuSelect,
-  CommandType.MenuUser,
-  CommandType.Modal,
-  CommandType.Button
-> {
+): EventPlugin<CommandType.Both> {
   return {
     type: PluginType.Event,
     description: "Checks bot/user perms",
-    async execute(event, controller) {
+    //unsafe type assertion!
+    async execute(event: [CommandInteraction], controller: Controller) {
       const [ctx] = event;
       if (ctx.guild === null) {
         ctx.reply("This command cannot be used here");
