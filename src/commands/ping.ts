@@ -13,7 +13,10 @@ import {
 
 export default commandModule({
   type: CommandType.MenuUser,
-  plugins: [publish(), requirePermission("bot", "ManageChannels")],
+  plugins: [
+    publish(),
+    requirePermission<CommandType.MenuUser>("bot", "ManageChannels"),
+  ],
   execute: async (ctx) => {
     await ctx.reply("thank you");
   },
