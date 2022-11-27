@@ -1,23 +1,24 @@
 import { commandModule, CommandType } from "@sern/handler";
 import { publish } from "../plugins/publish";
-import { requirePermission } from "../plugins/myPermCheck";
+import { requirePermissions } from "../plugins/requirePermissions";
 import {
-  ActionRowBuilder,
-  ComponentType,
-  ModalBuilder,
-  ModalSubmitInteraction,
-  CommandInteraction,
-  TextInputStyle,
-  TextInputBuilder,
+	ActionRowBuilder,
+	ComponentType,
+	ModalBuilder,
+	ModalSubmitInteraction,
+	CommandInteraction,
+	TextInputStyle,
+	TextInputBuilder
 } from "discord.js";
 
 export default commandModule({
-  type: CommandType.MenuUser,
-  plugins: [
-    publish(),
-    requirePermission<CommandType.MenuUser>("bot", "ManageChannels"),
-  ],
-  execute: async (ctx) => {
-    await ctx.reply("thank you");
-  },
+	type: CommandType.Slash,
+	description: "ping the bot",
+	plugins: [
+		publish(),
+		requirePermissions<CommandType.Slash>("bot", ["ManageChannels"])
+	],
+	execute: async (ctx) => {
+		await ctx.reply("thank you");
+	}
 });
